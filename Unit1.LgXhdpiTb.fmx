@@ -1,0 +1,32 @@
+inherited Form1_LgXhdpiTb: TForm1_LgXhdpiTb
+  ClientHeight = 829
+  ClientWidth = 480
+  DesignerMasterStyle = 3
+  inherited Memo: TMemo
+    TextSettings.Font.StyleExt = {00070000000000000004000000}
+    Size.Width = 472.000000000000000000
+    Size.Height = 730.000000000000000000
+    Viewport.Width = 472.000000000000000000
+    Viewport.Height = 730.000000000000000000
+  end
+  inherited ButtonsLayout: TLayout
+    Position.Y = 786.000000000000000000
+    Size.Width = 480.000000000000000000
+    inherited uAsk: TButton
+      Position.X = 48.000000000000000000
+    end
+    inherited UseExampleCheckBox: TCheckBox
+      Position.X = 394.000000000000000000
+    end
+    inherited GenApiK: TButton
+      Position.X = 250.000000000000000000
+    end
+    inherited uApiK: TButton
+      Position.X = 149.000000000000000000
+    end
+  end
+  inherited Edit1: TEdit
+    Position.Y = 746.000000000000000000
+    Size.Width = 464.000000000000000000
+  end
+end

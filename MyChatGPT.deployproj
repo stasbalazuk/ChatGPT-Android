@@ -5,7 +5,7 @@
     </ProjectExtensions>
     <PropertyGroup>
         <DeviceId Condition="'$(Platform)'=='Android'">emulator-5554</DeviceId>
-        <DeviceId Condition="'$(Platform)'=='Android64'">emulator-5554</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android64'">localhost:5555</DeviceId>
         <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
         <DeviceId Condition="'$(Platform)'=='iOSSimARM64'"/>
     </PropertyGroup>

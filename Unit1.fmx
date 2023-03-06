@@ -8,7 +8,7 @@ object Form1: TForm1
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  DesignerMasterStyle = 0
+  DesignerMasterStyle = 3
   object Memo: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
     DataDetectorTypes = []
@@ -22,11 +22,11 @@ object Form1: TForm1
     Margins.Right = 4.000000000000000000
     Margins.Bottom = 4.000000000000000000
     Size.Width = 478.000000000000000000
-    Size.Height = 398.000000000000000000
+    Size.Height = 388.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
-    Viewport.Width = 474.000000000000000000
-    Viewport.Height = 394.000000000000000000
+    Viewport.Width = 470.000000000000000000
+    Viewport.Height = 380.000000000000000000
   end
   object ButtonsLayout: TLayout
     Align = Bottom
@@ -49,7 +49,7 @@ object Form1: TForm1
       Size.Width = 89.000000000000000000
       Size.Height = 35.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 5
       Text = 'Check'
       Visible = False
       OnClick = CheckUpdateButtonClick
@@ -64,7 +64,7 @@ object Form1: TForm1
       Size.Width = 89.000000000000000000
       Size.Height = 35.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 3
+      TabOrder = 4
       Text = 'Update'
       Visible = False
       OnClick = UpdateButtonClick
@@ -72,12 +72,12 @@ object Form1: TForm1
     object uAsk: TButton
       Align = Right
       StyledSettings = [Family, Style, FontColor]
-      Position.X = 155.000000000000000000
+      Position.X = 54.000000000000000000
       Position.Y = 4.000000000000000000
       Size.Width = 89.000000000000000000
       Size.Height = 35.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 2
+      TabOrder = 3
       Text = 'Ask'
       OnClick = uAskClick
     end
@@ -93,7 +93,7 @@ object Form1: TForm1
       TabOrder = 0
       Text = 'Voice'
     end
-    object Button1: TButton
+    object GenApiK: TButton
       Align = Right
       StyledSettings = [Family, Style, FontColor]
       Margins.Left = 12.000000000000000000
@@ -104,7 +104,20 @@ object Form1: TForm1
       Size.PlatformDefault = False
       TabOrder = 1
       Text = 'ApiKey Generation'
-      OnClick = Button1Click
+      OnClick = GenApiKClick
+    end
+    object uApiK: TButton
+      Align = Right
+      StyledSettings = [Family, Style, FontColor]
+      Margins.Left = 12.000000000000000000
+      Position.X = 155.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 35.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'ApiKey'
+      OnClick = uApiKClick
     end
   end
   object Edit1: TEdit
@@ -113,13 +126,13 @@ object Form1: TForm1
     TabOrder = 3
     Text = 'Hello, how are you?'
     Position.X = 8.000000000000000000
-    Position.Y = 414.000000000000000000
+    Position.Y = 404.000000000000000000
     Margins.Left = 8.000000000000000000
     Margins.Top = 8.000000000000000000
     Margins.Right = 8.000000000000000000
     Margins.Bottom = 8.000000000000000000
     Size.Width = 470.000000000000000000
-    Size.Height = 22.000000000000000000
+    Size.Height = 32.000000000000000000
     Size.PlatformDefault = False
     OnChange = Edit1Change
     OnKeyUp = Edit1KeyUp
@@ -133,7 +146,7 @@ object Form1: TForm1
     OnModelsLoaded = RDChatGpt1ModelsLoaded
     OnCompletionsLoaded = RDChatGpt1CompletionsLoaded
     Asynchronous = True
-    Left = 312
-    Top = 136
+    Left = 216
+    Top = 168
   end
 end

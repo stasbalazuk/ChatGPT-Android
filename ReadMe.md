@@ -33,6 +33,9 @@ Please refer to the Build Events section of the Project Options. There are two c
 As per the Build Events section above, the merged `styles.xml` is added to the deployment. As this file is an "override", the Delphi generated styles.xml deployment **needs to be disabled** (if one exists): 
 
 <img src="Screenshots/Deployment.png" alt="logo" height="200">
+<img src="Screenshots/delphi.png" alt="logo" height="500">
+<img src="Screenshots/BlueStack.png" alt="logo" height="500">
+<img src="Screenshots/chatgpt.png" alt="logo" height="300">
 
 ## Thanks
 

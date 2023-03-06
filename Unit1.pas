@@ -28,7 +28,8 @@ type
     RDChatGpt1: TRDChatGpt;
     Edit1: TEdit;
     UseExampleCheckBox: TCheckBox;
-    Button1: TButton;
+    GenApiK: TButton;
+    uApiK: TButton;
     procedure CheckUpdateButtonClick(Sender: TObject);
     procedure UpdateButtonClick(Sender: TObject);
     procedure uAskClick(Sender: TObject);
@@ -40,7 +41,8 @@ type
     procedure RDChatGpt1CompletionsLoaded(Sender: TObject; AType: TCompletions);
     procedure RDChatGpt1Error(Sender: TObject; AMessage: string);
     procedure RDChatGpt1ModelsLoaded(Sender: TObject; AType: TModels);
-    procedure Button1Click(Sender: TObject);
+    procedure GenApiKClick(Sender: TObject);
+    procedure uApiKClick(Sender: TObject);
   private
     FApiKey: string;
     FSpeaker: TTextToSpeech;
@@ -63,6 +65,8 @@ var
 implementation
 
 {$R *.fmx}
+{$R *.LgXhdpiTb.fmx ANDROID}
+{$R *.LgXhdpiPh.fmx ANDROID}
 
 uses
   System.TypInfo,System.IOUtils, FMX.DialogService,
@@ -193,8 +197,9 @@ begin
 if FileExists(System.IOUtils.TPath.GetDocumentsPath + System.SysUtils.PathDelim + 'config.ini') then
    uToken := LoadSettingString('Setting','Token','')
 else
-  uToken := '';
-  ReportMemoryLeaksOnShutdown := True;
+   uToken := '';
+   if Length(uToken) < 13 then uToken := '';
+   ReportMemoryLeaksOnShutdown := True;
 end;
 
 procedure TForm1.RDChatGpt1Answer(Sender: TObject; AMessage: string);
@@ -272,7 +277,7 @@ except
 end;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.GenApiKClick(Sender: TObject);
 begin
 try
   OpenUrl(URL_API_KEY);
@@ -289,6 +294,30 @@ begin
   end;
 end
 );
+end;
+end;
+
+procedure TForm1.uApiKClick(Sender: TObject);
+begin
+try
+ TDialogservice.InputQuery('Attention', ['Please enter your APIKey:'], [''],
+    procedure(const AResult: TModalResult; const AValues: array of string)
+      begin
+        case AResult of
+          mrOk:
+            begin
+              uToken:=AValues[0];
+              SaveSettingString('Setting','Token',uToken);
+            end;
+          mrCancel:
+            begin
+              uToken:='';
+            end;
+        end;
+      end
+    );
+except
+  Exit;
 end;
 end;
 
