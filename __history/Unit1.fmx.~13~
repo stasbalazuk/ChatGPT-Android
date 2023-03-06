@@ -1,0 +1,122 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 487
+  ClientWidth = 486
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object Memo: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    ReadOnly = True
+    StyledSettings = [Family, Size, FontColor]
+    TextSettings.Font.StyleExt = {00070000000000000004000000}
+    TextSettings.WordWrap = True
+    Align = Client
+    Margins.Left = 4.000000000000000000
+    Margins.Top = 4.000000000000000000
+    Margins.Right = 4.000000000000000000
+    Margins.Bottom = 4.000000000000000000
+    Size.Width = 478.000000000000000000
+    Size.Height = 398.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Viewport.Width = 474.000000000000000000
+    Viewport.Height = 394.000000000000000000
+  end
+  object ButtonsLayout: TLayout
+    Align = Bottom
+    Padding.Left = 4.000000000000000000
+    Padding.Top = 4.000000000000000000
+    Padding.Right = 4.000000000000000000
+    Padding.Bottom = 4.000000000000000000
+    Position.Y = 444.000000000000000000
+    Size.Width = 486.000000000000000000
+    Size.Height = 43.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object CheckUpdateButton: TButton
+      Align = Right
+      StyledSettings = [Family, Style, FontColor]
+      Margins.Left = 12.000000000000000000
+      Position.X = 299.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 35.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Check'
+      OnClick = CheckUpdateButtonClick
+    end
+    object UpdateButton: TButton
+      Align = Right
+      StyledSettings = [Family, Style, FontColor]
+      Margins.Left = 12.000000000000000000
+      Position.X = 198.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 35.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'Update'
+      OnClick = UpdateButtonClick
+    end
+    object uAsk: TButton
+      Align = Right
+      StyledSettings = [Family, Style, FontColor]
+      Position.X = 97.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 35.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Ask'
+      OnClick = uAskClick
+    end
+    object UseExampleCheckBox: TCheckBox
+      Align = Right
+      IsChecked = True
+      Margins.Left = 12.000000000000000000
+      Position.X = 400.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 82.000000000000000000
+      Size.Height = 35.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Voice'
+    end
+  end
+  object Edit1: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Bottom
+    TabOrder = 3
+    Text = 'Hello, how are you?'
+    Position.X = 8.000000000000000000
+    Position.Y = 414.000000000000000000
+    Margins.Left = 8.000000000000000000
+    Margins.Top = 8.000000000000000000
+    Margins.Right = 8.000000000000000000
+    Margins.Bottom = 8.000000000000000000
+    Size.Width = 470.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChange = Edit1Change
+    OnKeyUp = Edit1KeyUp
+  end
+  object RDChatGpt1: TRDChatGpt
+    Temperature = 0.100000000000000000
+    Model = 'text-davinci-003'
+    URL = 'https://api.openai.com/v1'
+    OnAnswer = RDChatGpt1Answer
+    OnError = RDChatGpt1Error
+    OnModelsLoaded = RDChatGpt1ModelsLoaded
+    OnCompletionsLoaded = RDChatGpt1CompletionsLoaded
+    Asynchronous = True
+    Left = 312
+    Top = 136
+  end
+end

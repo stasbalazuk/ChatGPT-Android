@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<ActiveMobileDevice>
+		<NoProfile Android="emulator-5554" Android64="emulator-5554"/>
+	</ActiveMobileDevice>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.166,D:\Delphi\2023\Android\Kastri\Demos\AppUpdate\AppUpdateDemo.dproj=D:\Delphi\2023\Android\Kastri\Demos\AppUpdate\MyChatGPT.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,227 @@
+unit Unit1;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Memo.Types, FMX.StdCtrls, FMX.Layouts,
+  FMX.Controls.Presentation,
+  FMX.ScrollBox, FMX.Memo,
+  rd.OpenAI.ChatGpt.ViewModel,
+  rd.OpenAI.ChatGpt.Model,
+  System.Json,
+  Rest.Json,
+  System.Generics.Collections,
+  Rest.JsonReflect,
+  DW.AppUpdate, FMX.Edit, FMX.ListBox, DW.TextToSpeech;
+
+type
+  TForm1 = class(TForm)
+    Memo: TMemo;
+    ButtonsLayout: TLayout;
+    CheckUpdateButton: TButton;
+    UpdateButton: TButton;
+    uAsk: TButton;
+    RDChatGpt1: TRDChatGpt;
+    Edit1: TEdit;
+    UseExampleCheckBox: TCheckBox;
+    procedure CheckUpdateButtonClick(Sender: TObject);
+    procedure UpdateButtonClick(Sender: TObject);
+    procedure uAskClick(Sender: TObject);
+    procedure Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
+      Shift: TShiftState);
+    procedure Edit1Change(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure RDChatGpt1Answer(Sender: TObject; AMessage: string);
+    procedure RDChatGpt1CompletionsLoaded(Sender: TObject; AType: TCompletions);
+    procedure RDChatGpt1Error(Sender: TObject; AMessage: string);
+    procedure RDChatGpt1ModelsLoaded(Sender: TObject; AType: TModels);
+  private
+    FApiKey: string;
+    FSpeaker: TTextToSpeech;
+    FAppUpdate: TAppUpdate;
+    procedure SpeakerCheckDataCompleteHandler(Sender: TObject);
+    procedure SpeakerSpeechStartedHandler(Sender: TObject);
+    procedure SpeakerSpeechFinishedHandler(Sender: TObject);
+    procedure AppUpdateInfoHandler(Sender: TObject; const AInfo: TAppUpdateInfo);
+    procedure AppUpdateResultHandler(Sender: TObject; const AUpdateResult: TAppUpdateResult);
+    procedure AppUpdateStartedFlowHandler(Sender: TObject; const AStarted: Boolean);
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.fmx}
+
+uses
+  System.TypInfo,System.IOUtils;
+
+{ TForm1 }
+
+constructor TForm1.Create(AOwner: TComponent);
+begin
+  inherited;
+  FAppUpdate := TAppUpdate.Create;
+  FAppUpdate.OnAppUpdateInfo := AppUpdateInfoHandler;
+  FAppUpdate.OnAppUpdateStartedFlow := AppUpdateStartedFlowHandler;
+  FAppUpdate.OnAppUpdateResult := AppUpdateResultHandler;
+  FSpeaker := TTextToSpeech.Create;
+  FSpeaker.OnSpeechStarted := SpeakerSpeechStartedHandler;
+  FSpeaker.OnSpeechFinished := SpeakerSpeechFinishedHandler;
+  FSpeaker.OnCheckDataComplete := SpeakerCheckDataCompleteHandler;
+  if not FSpeaker.CheckData then Memo.Lines.Add('Cannot check available data');
+end;
+
+destructor TForm1.Destroy;
+begin
+  FAppUpdate.Free;
+  FSpeaker.Free;
+  inherited;
+end;
+
+
+procedure TForm1.SpeakerCheckDataCompleteHandler(Sender: TObject);
+var
+  LVoice: string;
+begin
+  // LogMemo.Lines.Add('Speaking finished');
+  if Length(FSpeaker.AvailableVoices) > 0 then
+  begin
+    Memo.Lines.Add('Available voices:');
+    for LVoice in FSpeaker.AvailableVoices do
+      Memo.Lines.Add(LVoice);
+  end;
+  if Length(FSpeaker.UnavailableVoices) > 0 then
+  begin
+    Memo.Lines.Add('Unavailable voices:');
+    for LVoice in FSpeaker.UnavailableVoices do
+      Memo.Lines.Add(LVoice);
+  end;
+end;
+
+procedure TForm1.SpeakerSpeechFinishedHandler(Sender: TObject);
+begin
+  Memo.Lines.Add('Speaking finished');
+end;
+
+procedure TForm1.SpeakerSpeechStartedHandler(Sender: TObject);
+begin
+  Memo.Lines.Add('Speaking started');
+end;
+
+procedure TForm1.Edit1Change(Sender: TObject);
+begin
+  Button1.Enabled := Edit1.Text.Trim <> '';
+end;
+
+procedure TForm1.Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
+  Shift: TShiftState);
+begin
+  if Key = vkReturn then
+  begin
+    Key := 0;
+    Button1Click(nil);
+  end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  ReportMemoryLeaksOnShutdown := True;
+end;
+
+procedure TForm1.RDChatGpt1Answer(Sender: TObject; AMessage: string);
+begin
+  Edit1.Text := '';
+  Memo.Lines.Add(AMessage);
+  if UseExampleCheckBox.IsChecked then
+     FSpeaker.Speak(Memo.Text);
+end;
+
+procedure TForm1.RDChatGpt1CompletionsLoaded(Sender: TObject;
+  AType: TCompletions);
+begin
+  Caption := AType.Model;
+end;
+
+procedure TForm1.RDChatGpt1Error(Sender: TObject; AMessage: string);
+begin
+  Memo.Lines.Add('Error: ' + AMessage);
+end;
+
+procedure TForm1.RDChatGpt1ModelsLoaded(Sender: TObject; AType: TModels);
+begin
+  Assert(AType <> nil);
+end;
+
+procedure TForm1.AppUpdateInfoHandler(Sender: TObject; const AInfo: TAppUpdateInfo);
+begin
+try
+  Memo.Lines.Add('Available: ' + BoolToStr(AInfo.Available, True));
+  if AInfo.Available then
+  begin
+    Memo.Lines.Add('Total Bytes: ' + AInfo.TotalBytesToDownload.ToString);
+    Memo.Lines.Add('Priority: ' + AInfo.Priority.ToString);
+    Memo.Lines.Add('Immediate: ' + BoolToStr(AInfo.Immediate, True));
+    Memo.Lines.Add('Flexible: ' + BoolToStr(AInfo.Flexible, True));
+    if AInfo.Flexible then Memo.Lines.Add('Staleness Days: ' + AInfo.StalenessDays.ToString);
+  end;
+except
+  Exit;
+end;
+end;
+
+procedure TForm1.AppUpdateResultHandler(Sender: TObject; const AUpdateResult: TAppUpdateResult);
+begin
+try
+  Memo.Lines.Add('Update result: ' + GetEnumName(TypeInfo(TAppUpdateResult), Ord(AUpdateResult)));
+except
+  Exit;
+end;
+end;
+
+procedure TForm1.AppUpdateStartedFlowHandler(Sender: TObject; const AStarted: Boolean);
+begin
+try
+  Memo.Lines.Add('Flow started: ' + BoolToStr(AStarted, True));
+except
+  Exit;
+end;
+end;
+
+procedure TForm1.uAskClick(Sender: TObject);
+begin
+try
+  RDChatGpt1.Cancel;
+  RDChatGpt1.ApiKey := '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';
+  RDChatGpt1.Question := Edit1.Text;
+  RDChatGpt1.Ask;
+  Edit1.SetFocus;
+except
+  Exit;
+end;
+end;
+
+procedure TForm1.CheckUpdateButtonClick(Sender: TObject);
+begin
+try
+  FAppUpdate.CheckForUpdate;
+except
+  Exit;
+end;
+end;
+
+procedure TForm1.UpdateButtonClick(Sender: TObject);
+begin
+try
+  FAppUpdate.StartUpdate(TAppUpdateType.Immediate);
+except
+  Exit;
+end;
+end;
+
+end.
